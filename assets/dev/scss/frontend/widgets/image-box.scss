@@ -3,44 +3,20 @@
 //
 .elementor-widget-image-box {
 
-	.elementor-image-box-content {
-		width: 100%; // Hack for Chrome in flex mode
+	.elementor-image-box {
+
+		&-content {
+			width: 100%; // Hack for Chrome in flex mode
+		}
+
+		&-wrapper {
+			display: var(--wrapper-display, block);
+			text-align: getValueByDirection( var(--wrapper-align-ltr, center), var(--wrapper-align-rtl, center) );
+			flex-direction: getValueByDirection( var(--wrapper-direction-ltr), var(--wrapper-direction-rtl) );
+		}
 	}
 
 	@media (min-width: $screen-mobile-next) {
-
-		&.elementor-position- {
-
-			&left, &right {
-
-				.elementor-image-box-wrapper {
-					display: flex;
-				}
-			}
-
-			&right {
-
-				.elementor-image-box-wrapper {
-					text-align: $end;
-					flex-direction: getValueByDirection(row-reverse, row);
-				}
-			}
-
-			&left {
-
-				.elementor-image-box-wrapper {
-					text-align: $start;
-					flex-direction: getValueByDirection(row, row-reverse);
-				}
-			}
-
-			&top {
-
-				.elementor-image-box-img {
-					margin: auto;
-				}
-			}
-		}
 
 		&.elementor-vertical-align- {
 
@@ -67,18 +43,14 @@
 		}
 	}
 
-	@media (max-width: $screen-mobile-max) {
-
-		// TEMP code to override the image spacing
-		.elementor-image-box-img {
-			margin-left: auto !important;
-			margin-right: auto !important;
-			margin-bottom: 15px;
-		}
-	}
-
 	.elementor-image-box-img {
 		display: inline-block; // For alignment content
+	}
+
+	&.elementor-element .elementor-widget-container .elementor-image-box-wrapper .elementor-image-box-img {
+		margin-left: var(--image-margin-left, var(--image-spacing, 15px));
+		margin-right: var(--image-margin-right, var(--image-spacing, 15px));
+		margin-bottom: var(--image-margin-bottom, var(--image-spacing, 15px));
 	}
 
 	.elementor-image-box-title {
@@ -88,11 +60,21 @@
 		}
 	}
 
-	.elementor-image-box-wrapper {
-		text-align: center;
-	}
-
 	.elementor-image-box-description {
 		margin: 0;
+	}
+
+	@media (max-width: $screen-mobile-max) {
+
+		&.elementor-position {
+
+			&-left, &-right {
+
+				// BC compatibility code since 3.7.0
+				.elementor-widget-container .elementor-image-box-wrapper .elementor-image-box-img {
+					margin-bottom: 15px;
+				}
+			}
+		}
 	}
 }
