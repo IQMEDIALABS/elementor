@@ -247,6 +247,64 @@ class Widget_Image_Gallery extends Widget_Base {
 			]
 		);
 
+		$this->start_controls_tabs( 'gallery_shadow' );
+
+		$this->start_controls_tab(
+			'gallery_tabs_normal',
+			[
+				'label' => esc_html__( 'Normal', 'elementor' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'gallery_shadow',
+				'selector' => '{{WRAPPER}} .gallery-item img',
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->start_controls_tab(
+			'gallery_tabs_hover',
+			[
+				'label' => esc_html__( 'Hover', 'elementor' ),
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'gallery_shadow_hover',
+				'selector' => '{{WRAPPER}} .gallery-item img:hover',
+			]
+		);
+
+		$this->add_control(
+			'gallery_hover_transition',
+			[
+				'label' => esc_html__( 'Transition Duration', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => '--image-gallery-hover-transition: {{SIZE}}s',
+				],
+			]
+		);
+
+		$this->end_controls_tab();
+
+		$this->end_controls_tabs();
+
 		$this->end_controls_section();
 
 		$this->start_controls_section(

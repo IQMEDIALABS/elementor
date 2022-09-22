@@ -293,6 +293,17 @@ class Widget_Icon_Box extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'icon_box_shadow',
+				'selector' => '{{WRAPPER}} .elementor-icon',
+				'condition' => [
+					'view!' => 'default',
+				],
+			]
+		);
+
 		$this->end_controls_tab();
 
 		$this->start_controls_tab(
@@ -331,6 +342,40 @@ class Widget_Icon_Box extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'icon_box_shadow_hover',
+				'selector' => '{{WRAPPER}} .elementor-icon:hover',
+				'condition' => [
+					'view!' => 'default',
+				],
+			]
+		);
+
+		$this->add_control(
+			'icon_box_hover_transition',
+			[
+				'label' => esc_html__( 'Transition Duration', 'elementor' ),
+				'type' => Controls_Manager::SLIDER,
+				'default' => [
+					'size' => 0.3,
+				],
+				'range' => [
+					'px' => [
+						'max' => 3,
+						'step' => 0.1,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}}' => '--icon-box-hover-transition: {{SIZE}}s',
+				],
+				'condition' => [
+					'view!' => 'default',
+				],
+			]
+		);
+
 		$this->add_control(
 			'hover_animation',
 			[
@@ -348,6 +393,7 @@ class Widget_Icon_Box extends Widget_Base {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor' ),
 				'type' => Controls_Manager::SLIDER,
+				'separator' => 'before',
 				'default' => [
 					'size' => 15,
 				],

@@ -334,6 +334,14 @@ class Widget_Image_Box extends Widget_Base {
 			]
 		);
 
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'image_shadow',
+				'selector' => '{{WRAPPER}} .elementor-image-box-img img',
+			]
+		);
+
 		$this->add_control(
 			'background_hover_transition',
 			[
@@ -349,7 +357,7 @@ class Widget_Image_Box extends Widget_Base {
 					],
 				],
 				'selectors' => [
-					'{{WRAPPER}} .elementor-image-box-img img' => 'transition-duration: {{SIZE}}s',
+					'{{WRAPPER}}' => '--image-box-hover-transition: {{SIZE}}s',
 				],
 			]
 		);
@@ -385,6 +393,14 @@ class Widget_Image_Box extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}}:hover .elementor-image-box-img img' => 'opacity: {{SIZE}};',
 				],
+			]
+		);
+
+		$this->add_group_control(
+			Group_Control_Box_Shadow::get_type(),
+			[
+				'name' => 'image_shadow_hover',
+				'selector' => '{{WRAPPER}} .elementor-image-box-img:hover img',
 			]
 		);
 
