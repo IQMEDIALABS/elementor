@@ -127,10 +127,11 @@ const entry = {
 	'ai-layout': path.resolve(__dirname, '../modules/ai/assets/js/editor/layout-module.js'),
 	'element-manager-admin': path.resolve(__dirname, '../modules/element-manager/assets/js/admin.js'),
 	// Temporary solution for the AI App in the Admin.
-	'ai-admin': path.resolve(__dirname, '../modules/ai/assets/js/admin/index.js'),
-	'styleguide': path.resolve(__dirname, '../modules/styleguide/assets/js/styleguide.js'),
-	'styleguide-app-initiator': path.resolve(__dirname, '../modules/styleguide/assets/js/styleguide-app-initiator.js'),
-	'memory-game': path.resolve(__dirname, '../modules/memory-game/assets/js/frontend/frontend.js'),
+	'ai-admin': path.resolve( __dirname, '../modules/ai/assets/js/admin/index.js' ),
+	'styleguide': path.resolve( __dirname, '../modules/styleguide/assets/js/styleguide.js' ),
+	'styleguide-app-initiator': path.resolve( __dirname, '../modules/styleguide/assets/js/styleguide-app-initiator.js' ),
+	'e-home-screen': path.resolve( __dirname, '../modules/home/assets/js/app.js' ),
+  'memory-game': path.resolve(__dirname, '../modules/memory-game/assets/js/frontend/frontend.js'),
 };
 
 const frontendEntries = {
