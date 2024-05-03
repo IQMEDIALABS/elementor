@@ -495,6 +495,7 @@ class Manager extends Base_Object {
 			'default' => self::STATE_INACTIVE,
 			'generator_tag' => true,
 		] );
+		
 	}
 
 	/**
