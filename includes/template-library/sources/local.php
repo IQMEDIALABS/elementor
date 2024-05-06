@@ -223,8 +223,16 @@ class Source_Local extends Source_Base {
 	 * @access public
 	 */
 	public function register_data() {
+		$admin_menu_rearrangement_active = Plugin::$instance->experiments->is_feature_active( 'admin_menu_rearrangement' );
+
+		if ( $admin_menu_rearrangement_active ) {
+			$name = esc_html_x( 'Templates', 'Template Library', 'elementor' );
+		} else {
+			$name = esc_html_x( 'My Templates', 'Template Library', 'elementor' );
+		}
+
 		$labels = [
-			'name' => esc_html_x( 'My Templates', 'Template Library', 'elementor' ),
+			'name' => $name,
 			'singular_name' => esc_html_x( 'Template', 'Template Library', 'elementor' ),
 			'add_new' => esc_html__( 'Add New Template', 'elementor' ),
 			'add_new_item' => esc_html__( 'Add New Template', 'elementor' ),
@@ -245,7 +253,7 @@ class Source_Local extends Source_Base {
 			'rewrite' => false,
 			'menu_icon' => 'dashicons-admin-page',
 			'show_ui' => true,
-			'show_in_menu' => true,
+			'show_in_menu' => ! $admin_menu_rearrangement_active,
 			'show_in_nav_menus' => false,
 			'exclude_from_search' => true,
 			'capability_type' => 'post',

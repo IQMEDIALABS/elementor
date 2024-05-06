@@ -8,9 +8,9 @@ import PageContentLayout from '../components/layout/page-content-layout';
 export default function Account() {
 	const { state, updateState, getStateObjectToUpdate } = useContext( OnboardingContext ),
 		[ noticeState, setNoticeState ] = useState( null ),
-		nextStep = getNextStep(),
 		navigate = useNavigate(),
 		pageId = 'account',
+		nextStep = state.isHelloThemeActivated ? 'siteName' : 'hello',
 		actionButtonRef = useRef(),
 		alreadyHaveAccountLinkRef = useRef();
 
@@ -26,23 +26,15 @@ export default function Account() {
 
 	if ( state.isLibraryConnected ) {
 		pageTexts = {
-			firstLine: <>{ __( 'To get the most out of Elementor, we\'ll help you take your', 'elementor' ) } <br /> { __( 'first steps:', 'elementor' ) }</>,
-			listItems: elementorAppConfig.onboarding.experiment
-				? [
-					__( 'Set your site\'s theme', 'elementor' ),
-					__( 'Chose additional features', 'elementor' ),
-					__( 'Choose how to start creating', 'elementor' ),
-				] : [
-					__( 'Set your site\'s theme', 'elementor' ),
-					__( 'Give your site a name & logo', 'elementor' ),
-					__( 'Choose how to start creating', 'elementor' ),
-				],
+			firstLine: __( 'To get the most out of Elementor, we\'ll help you take your first steps:', 'elementor' ),
+			listItems: [
+				__( 'Set your site\'s theme', 'elementor' ),
+				__( 'Give your site a name & logo', 'elementor' ),
+				__( 'Choose how to start creating', 'elementor' ),
+			],
 		};
 	} else {
-		pageTexts = elementorAppConfig.onboarding.experiment ? {
-			firstLine: __( 'Once you connect your Elementor account, you can choose from dozens of professional templates and manage your site with the My Elementor dashboard.', 'elementor' ),
-			listItems: [],
-		} : {
+		pageTexts = {
 			firstLine: __( 'To get the most out of Elementor, we’ll connect your account.', 'elementor' ) +
 			' ' + __( 'Then you can:', 'elementor' ),
 			listItems: [
@@ -123,13 +115,6 @@ export default function Account() {
 		navigate( 'onboarding/' + nextStep );
 	};
 
-	function getNextStep() {
-		if ( ! state.isHelloThemeActivated ) {
-			return 'hello';
-		}
-
-		return elementorAppConfig.onboarding.experiment ? 'chooseFeatures' : 'siteName';
-	}
 	const connectFailureCallback = () => {
 		elementorCommon.events.dispatchEvent( {
 			event: 'indication prompt',
@@ -155,8 +140,7 @@ export default function Account() {
 		<Layout pageId={ pageId } nextStep={ nextStep }>
 			<PageContentLayout
 				image={ elementorCommon.config.urls.assets + 'images/app/onboarding/Illustration_Account.svg' }
-				title={ elementorAppConfig.onboarding.experiment ? __( 'You\'re here!', 'elementor' ) : __( 'You\'re here! Let\'s set things up.', 'elementor' ) }
-				secondLineTitle={ elementorAppConfig.onboarding.experiment ? __( ' Let\'s get connected.', 'elementor' ) : '' }
+				title={ __( 'You\'re here! Let\'s set things up.', 'elementor' ) }
 				actionButton={ actionButton }
 				skipButton={ skipButton }
 				noticeState={ noticeState }

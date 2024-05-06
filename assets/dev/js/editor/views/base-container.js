@@ -74,10 +74,6 @@ module.exports = Marionette.CompositeView.extend( {
 			options.onBeforeAdd();
 		}
 
-		if ( this.filterSettings ) {
-			this.filterSettings( newItem );
-		}
-
 		var newModel = this.addChildModel( newItem, { at: options.at } ),
 			newView = this.children.findByModel( newModel );
 

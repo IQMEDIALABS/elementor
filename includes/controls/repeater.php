@@ -65,7 +65,6 @@ class Control_Repeater extends Base_Data_Control {
 			'title_field' => '',
 			'prevent_empty' => true,
 			'is_repeater' => true,
-			'max_items' => 0,
 			'item_actions' => [
 				'add' => true,
 				'duplicate' => true,

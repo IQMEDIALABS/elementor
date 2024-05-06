@@ -19,7 +19,7 @@ Container.propTypes = {
 
 const ImagesDisplay = ( {
 	images,
-	aspectRatio = '1:1',
+	aspectRatio,
 	onUseImage,
 	onEditImage,
 	transparentContainer = false,

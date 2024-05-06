@@ -1,7 +1,6 @@
 import ColorPicker from './color-picker';
 import DocumentHelper from 'elementor-editor/document/helper-bc';
 import ContainerHelper from 'elementor-editor-utils/container-helper';
-import DOMPurify from 'dompurify';
 
 const allowedHTMLWrapperTags = [
 	'article',
@@ -699,9 +698,5 @@ module.exports = {
 
 		const frString = Array.from( { length: size }, () => '1fr' ).join( ' ' );
 		return frString;
-	},
-
-	sanitize( value, options ) {
-		return DOMPurify.sanitize( value, options );
 	},
 };
