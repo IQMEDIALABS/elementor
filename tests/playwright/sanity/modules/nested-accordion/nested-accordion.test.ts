@@ -132,12 +132,12 @@ test.describe( 'Nested Accordion experiment is active @nested-accordion', () => 
 
 		await test.step( 'Duplicate an item to the repeater', async () => {
 			// Arrange
-			const duplicateButton = page.locator( '.elementor-repeater-tool-duplicate .eicon-copy' ).first(),
+			const
 				numberOfTitles = await nestedAccordionItemTitle.count(),
 				numberOfContents = await nestedAccordionItemContent.count();
 
 			// Act
-			await duplicateButton.click();
+			await editor.duplicateRepeaterItem( 'items', 1 );
 
 			// Assert
 			await expect.soft( nestedAccordionItemTitle ).toHaveCount( numberOfTitles + 1 );

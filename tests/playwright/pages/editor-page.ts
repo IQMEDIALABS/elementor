@@ -254,8 +254,8 @@ export default class EditorPage extends BasePage {
 			} );
 		}, { id: elementId } );
 
-		await this.getPreviewFrame().waitForSelector( '.elementor-element-' + elementId + '.elementor-element-editable' );
-		return this.getPreviewFrame().locator( '.elementor-element-' + elementId );
+		await this.getPreviewFrame().waitForSelector( `.elementor-element-${ elementId }.elementor-element-editable` );
+		return this.getPreviewFrame().locator( `.elementor-element-${ elementId }` );
 	}
 
 	/**
@@ -266,7 +266,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async copyElement( elementId: string ) {
-		const element = this.getPreviewFrame().locator( '.elementor-edit-mode .elementor-element-' + elementId );
+		const element = this.getPreviewFrame().locator( `.elementor-edit-mode .elementor-element-${ elementId }` );
 		await element.click( { button: 'right' } );
 
 		const copyListItemSelector = '.elementor-context-menu-list__item-copy:visible';
@@ -311,7 +311,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async pasteStyleElement( elementId: string ) {
-		const element = this.getPreviewFrame().locator( '.elementor-edit-mode .elementor-element-' + elementId );
+		const element = this.getPreviewFrame().locator( `.elementor-edit-mode .elementor-element-${ elementId }` );
 		await element.click( { button: 'right' } );
 
 		const pasteListItemSelector = '.elementor-context-menu-list__item-pasteStyle:visible';
@@ -381,7 +381,7 @@ export default class EditorPage extends BasePage {
 			return;
 		}
 
-		await this.page.locator( sectionSelector + '.e-open:visible .elementor-panel-heading' ).click();
+		await this.page.locator( `${ sectionSelector }.e-open:visible .elementor-panel-heading` ).click();
 	}
 
 	/**
@@ -418,7 +418,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async setTextControlValue( controlId: string, value: string ) {
-		await this.page.locator( `.elementor-control-${ controlId } input` ).fill( value.toString() );
+		await this.page.locator( `.elementor-control-${ controlId } input:visible` ).fill( value.toString() );
 	}
 
 	/**
@@ -430,7 +430,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async setTextareaControlValue( controlId: string, value: string ) {
-		await this.page.locator( `.elementor-control-${ controlId } textarea` ).fill( value.toString() );
+		await this.page.locator( `.elementor-control-${ controlId } textarea:visible` ).fill( value.toString() );
 	}
 
 	/**
@@ -442,7 +442,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async setNumberControlValue( controlId: string, value: string ) {
-		await this.page.locator( `.elementor-control-${ controlId } input >> nth=0` ).fill( value.toString() );
+		await this.page.locator( `.elementor-control-${ controlId } input:visible >> nth=0` ).fill( value.toString() );
 	}
 
 	/**
@@ -454,7 +454,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async setSliderControlValue( controlId: string, value: string ) {
-		await this.page.locator( `.elementor-control-${ controlId } .elementor-slider-input input` ).fill( value.toString() );
+		await this.page.locator( `.elementor-control-${ controlId } .elementor-slider-input input:visible` ).fill( value.toString() );
 	}
 
 	/**
@@ -466,7 +466,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async setSelectControlValue( controlId: string, value: string ) {
-		await this.page.selectOption( `.elementor-control-${ controlId } select`, value );
+		await this.page.selectOption( `.elementor-control-${ controlId } select:visible`, value );
 	}
 
 	/**
@@ -500,7 +500,7 @@ export default class EditorPage extends BasePage {
 	 * @return {Promise<void>}
 	 */
 	async setDimensionsValue( controlId: string, value: string ) {
-		await this.page.locator( `.elementor-control-${ controlId } .elementor-control-dimensions li:first-child input` ).fill( value );
+		await this.page.locator( `.elementor-control-${ controlId } .elementor-control-dimensions li:first-child input:visible` ).fill( value );
 	}
 
 	/**
@@ -528,8 +528,8 @@ export default class EditorPage extends BasePage {
 	async setColorControlValue( controlId: string, value: string ) {
 		const controlSelector = `.elementor-control-${ controlId }`;
 
-		await this.page.locator( controlSelector + ' .pcr-button' ).click();
-		await this.page.locator( '.pcr-app.visible .pcr-interaction input.pcr-result' ).fill( value );
+		await this.page.locator( `${ controlSelector } .pcr-button` ).click();
+		await this.page.locator( '.pcr-app.visible .pcr-interaction input.pcr-result:visible' ).fill( value );
 		await this.page.locator( controlSelector ).click();
 	}
 
@@ -543,8 +543,8 @@ export default class EditorPage extends BasePage {
 	 */
 	async setSwitcherControlValue( controlId: string, value: boolean = true ) {
 		const controlSelector = `.elementor-control-${ controlId }`,
-			controlLabel = this.page.locator( controlSelector + ' label.elementor-switch' ),
-			currentState = await this.page.locator( controlSelector + ' input[type="checkbox"]' ).isChecked();
+			controlLabel = this.page.locator( `${ controlSelector } label.elementor-switch` ),
+			currentState = await this.page.locator( `${ controlSelector } input[type="checkbox"]` ).isChecked();
 
 		if ( currentState !== Boolean( value ) ) {
 			await controlLabel.click();
@@ -578,7 +578,7 @@ export default class EditorPage extends BasePage {
 		const controlSelector = `.elementor-control-${ controlId }_typography .eicon-edit`;
 
 		await this.page.locator( controlSelector ).click();
-		await this.setSliderControlValue( controlId + '_font_size', fontsize );
+		await this.setSliderControlValue( `${ controlId }_font_size`, fontsize );
 		await this.page.locator( controlSelector ).click();
 	}
 
@@ -624,6 +624,53 @@ export default class EditorPage extends BasePage {
 		await this.setSelectControlValue( '_mask_size', 'custom' );
 		await this.setSliderControlValue( '_mask_size_scale', '30' );
 		await this.setSelectControlValue( '_mask_position', 'top right' );
+	}
+
+	/**
+	 * Add new repeater item.
+	 *
+	 * @param {string} controlId - Repeater control ID.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async addRepeaterItem( controlId: string ) {
+		await this.page.locator( `.elementor-control-${ controlId } button.elementor-repeater-add` ).click();
+	}
+
+	/**
+	 * Open repeater item.
+	 *
+	 * @param {string} controlId    - Repeater control ID.
+	 * @param {number} repeaterItem - The positions of the repeater item.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async openRepeaterItem( controlId: string, repeaterItem: number ) {
+		await this.page.locator( `.elementor-control-${ controlId } button.elementor-repeater-row-item-title` ).nth( repeaterItem ).click();
+	}
+
+	/**
+	 * Delete repeater item.
+	 *
+	 * @param {string} controlId    - Repeater control ID.
+	 * @param {number} repeaterItem - The positions of the repeater item.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async deleteRepeaterItem( controlId: string, repeaterItem: number ) {
+		await this.page.locator( `.elementor-control-${ controlId } button.elementor-repeater-tool-remove` ).nth( repeaterItem ).click();
+	}
+
+	/**
+	 * Duplicate repeater item.
+	 *
+	 * @param {string} controlId    - Repeater control ID.
+	 * @param {number} repeaterItem - The positions of the repeater item.
+	 *
+	 * @return {Promise<void>}
+	 */
+	async duplicateRepeaterItem( controlId: string, repeaterItem: number ) {
+		await this.page.locator( `.elementor-control-${ controlId } button.elementor-repeater-tool-duplicate` ).nth( repeaterItem ).click();
 	}
 
 	/**

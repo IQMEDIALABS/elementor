@@ -117,14 +117,14 @@ export async function setIconSize( editor: EditorPage, sizeInPx: string = '10' )
 
 export async function deleteItemFromRepeater( editor: EditorPage, accordionID: string ) {
 	// Arrange
-	const deleteItemButton = editor.page.locator( '.elementor-repeater-row-tool.elementor-repeater-tool-remove .eicon-close' ),
+	const
 		nestedAccordionItemTitle = editor.getPreviewFrame().locator( `.elementor-element-${ accordionID } .e-n-accordion-item` ),
 		nestedAccordionItemContent = editor.getPreviewFrame().locator( `.elementor-element-${ accordionID } .e-n-accordion-item .e-con` ),
 		numberOfTitles = await nestedAccordionItemTitle.count(),
 		numberOfContents = await nestedAccordionItemContent.count();
 
 	// Act
-	await deleteItemButton.nth( 1 ).click();
+	await editor.deleteRepeaterItem( 'items', 1 );
 
 	await editor.getPreviewFrame().waitForSelector( `.elementor-element-${ accordionID }` );
 
@@ -135,14 +135,14 @@ export async function deleteItemFromRepeater( editor: EditorPage, accordionID: s
 
 export async function addItemFromRepeater( editor: EditorPage, accordionID: string ) {
 	// Arrange
-	const addItemButton = editor.page.locator( '.elementor-repeater-add' ),
+	const
 		nestedAccordionItemTitle = editor.getPreviewFrame().locator( `.elementor-element-${ accordionID } .e-n-accordion-item` ),
 		nestedAccordionItemContent = editor.getPreviewFrame().locator( `.elementor-element-${ accordionID } .e-n-accordion-item .e-con` ),
 		numberOfTitles = await nestedAccordionItemTitle.count(),
 		numberOfContents = await nestedAccordionItemContent.count();
 
 	// Act
-	await addItemButton.click();
+	await editor.addRepeaterItem( 'items' );
 
 	await editor.getPreviewFrame().waitForSelector( `.elementor-element-${ accordionID }` );
 
@@ -168,11 +168,9 @@ export async function cloneItemFromRepeater( editor: EditorPage, position: strin
 		currentContainerAriaLabeledBy = await currentTitle.locator( '.e-con' ).nth( 0 ).getAttribute( 'aria-labelledby' ),
 		currentContainerWidgetTitle = await currentTitle.getByText( 'Add Your' ).textContent();
 
-	const cloneItemButton = editor.page.getByRole( 'button', { name: 'Duplicate' } ).nth( index );
-
 	// Act
 	await nestedAccordionItemTitle.nth( 0 ).locator( 'summary' ).click();
-	await cloneItemButton.click();
+	await editor.duplicateRepeaterItem( 'items', index );
 
 	const clonedTitle = nestedAccordionItemTitle.nth( index + 1 ),
 		clonedTitleId = await clonedTitle.getAttribute( 'id' ),
