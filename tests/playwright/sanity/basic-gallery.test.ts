@@ -6,8 +6,8 @@ import EditorPage from '../pages/editor-page';
 
 test( 'Basic Gallery', async ( { page, apiRequests }, testInfo ) => {
 	// Arrange.
-	const wpAdmin = new WpAdminPage( page, testInfo, apiRequests ),
-		editor = await wpAdmin.openNewPage();
+	const wpAdmin = new WpAdminPage( page, testInfo, apiRequests );
+	const editor = await wpAdmin.openNewPage();
 	const imageCarousel = new ImageCarousel( page, testInfo );
 
 	await editor.closeNavigatorIfOpen();
@@ -23,16 +23,11 @@ test( 'Basic Gallery', async ( { page, apiRequests }, testInfo ) => {
 		.toMatchSnapshot( 'gallery.jpeg' );
 } );
 
-test( 'Basic Gallery Lightbox test with latest Swiper', async ( { page, apiRequests }, testInfo ) => {
+test( 'Basic Gallery with Lightbox', async ( { page, apiRequests }, testInfo ) => {
 	// Arrange.
 	const wpAdmin = new WpAdminPage( page, testInfo, apiRequests );
-	const imageCarousel = new ImageCarousel( page, testInfo );
-
-	await wpAdmin.setExperiments( {
-		e_swiper_latest: true,
-	} );
-
 	const editor = await wpAdmin.openNewPage();
+	const imageCarousel = new ImageCarousel( page, testInfo );
 
 	await editor.closeNavigatorIfOpen();
 	await editor.addWidget( 'image-gallery' );
@@ -43,24 +38,6 @@ test( 'Basic Gallery Lightbox test with latest Swiper', async ( { page, apiReque
 	await wpAdmin.setExperiments( {
 		e_swiper_latest: false,
 	} );
-} );
-
-test( 'Basic Gallery Lightbox test with older Swiper', async ( { page, apiRequests }, testInfo ) => {
-	// Arrange.
-	const wpAdmin = new WpAdminPage( page, testInfo, apiRequests );
-	const imageCarousel = new ImageCarousel( page, testInfo );
-
-	await wpAdmin.setExperiments( {
-		e_swiper_latest: false,
-	} );
-
-	const editor = await wpAdmin.openNewPage();
-
-	await editor.closeNavigatorIfOpen();
-	await editor.addWidget( 'image-gallery' );
-
-	// Act.
-	await testBasicSwiperGallery( editor, imageCarousel );
 } );
 
 async function testBasicSwiperGallery( editor: EditorPage, imageCarousel: ImageCarousel ) {
