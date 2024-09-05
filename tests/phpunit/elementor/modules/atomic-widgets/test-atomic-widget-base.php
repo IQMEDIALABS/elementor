@@ -368,6 +368,65 @@ class Test_Atomic_Widget_Base extends Elementor_Test_Base {
 		$widget->get_atomic_controls();
 	}
 
+	public function test_get_atomic_widget_sanitized_settings__removes_non_existing_fields() {
+		// Arrange.
+		$widget = $this->make_mock_widget( [
+			'props_schema' => [
+				'string_prop' => String_Prop_Type::make()->default( '' ),
+				'number_prop' => Number_Prop_Type::make()->default( 0 ),
+				'boolean_prop' => Boolean_Prop_Type::make()->default( false ),
+			],
+			'settings' => [
+				'string_prop' => 'valid-string',
+				'number_prop' => 123,
+				'boolean_prop' => true,
+				'invalid_prop' => 'invalid-value',
+			],
+		] );
+
+		// Act.
+		$sanitized_settings = $widget::sanitize_schema( $widget::get_props_schema(), $widget->get_atomic_settings() );
+
+		// Assert.
+		$this->assertSame( [
+			'string_prop' => 'valid-string',
+			'number_prop' => 123,
+			'boolean_prop' => true,
+		], $sanitized_settings );
+	}
+
+	public function test_get_atomic_widget_sanitized_settings__removes_invalid_values() {
+		// Arrange.
+		$widget = $this->make_mock_widget( [
+			'props_schema' => [
+				'string_prop' => String_Prop_Type::make()->default( '' ),
+				'number_prop' => Number_Prop_Type::make()->default( 0 ),
+				'boolean_prop' => Boolean_Prop_Type::make()->default( false ),
+				'invalid_string_prop' => String_Prop_Type::make()->default( '' ),
+				'invalid_number_prop' => Number_Prop_Type::make()->default( 0 ),
+				'invalid_boolean_prop' => Boolean_Prop_Type::make()->default( false ),
+			],
+			'settings' => [
+				'string_prop' => 'valid-string',
+				'number_prop' => 123,
+				'boolean_prop' => true,
+				'invalid_string_prop' => 123,
+				'invalid_number_prop' => 'invalid-number',
+				'invalid_boolean_prop' => 'invalid-boolean',
+			],
+		] );
+
+		// Act.
+		$sanitized_settings = $widget::sanitize_schema( $widget::get_props_schema(), $widget->get_atomic_settings() );
+
+		// Assert.
+		$this->assertSame( [
+			'string_prop' => 'valid-string',
+			'number_prop' => 123,
+			'boolean_prop' => true,
+		], $sanitized_settings );
+	}
+
 	/**
 	 * @param array{controls: array, props_schema: array, settings: array} $options
 	 */
