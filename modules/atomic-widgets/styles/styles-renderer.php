@@ -2,15 +2,17 @@
 
 namespace Elementor\Modules\AtomicWidgets\Styles;
 
+use Elementor\Modules\AtomicWidgets\Base\Style_Transformer_Base;
+
 class Styles_Renderer {
 
 	/**
-	 * @var array<string, callable> $transformers
+	 * @var array<string, Style_Transformer_Base> $transformers
 	 */
 	private array $transformers;
 
 	/**
-	 * @var array<string, array{type: string, width: int}> $breakpoints
+	 * @var array<string, array{direction: 'min' | 'max', value: int, is_enabled: boolean}> $breakpoints
 	 */
 	private array $breakpoints;
 
@@ -18,8 +20,8 @@ class Styles_Renderer {
 	 * Styles_Renderer constructor.
 	 *
 	 * @param array{
-	 *     transformers: array<string, callable>,
-	 *     breakpoints: array<string, array{type: string, width: int}>
+	 *     transformers: array<string, Style_Transformer_Base>,
+	 *     breakpoints: array<string, array{direction: 'min' | 'max', value: int, is_enabled: boolean}>
 	 * } $config
 	 */
 	public function __construct( array $config ) {
@@ -132,15 +134,21 @@ class Styles_Renderer {
 			return $css;
 		}
 
+		$breakpoint_config = $this->breakpoints[ $breakpoint ];
+		if ( isset( $breakpoint_config['is_enabled'] ) && ! $breakpoint_config['is_enabled'] ) {
+			return '';
+		}
+
 		$size = $this->get_breakpoint_size( $this->breakpoints[ $breakpoint ] );
 
 		return $size ? '@media(' . $size . '){' . $css . '}' : $css;
 	}
 
 	private function get_breakpoint_size( array $breakpoint ): ?string {
-		return isset( $breakpoint['type'] )
-			? $breakpoint['type'] . ':' . $breakpoint['width'] . 'px'
-			: null;
+		$bound = 'min' === $breakpoint['direction'] ? 'min-width' : 'max-width';
+		$width = $breakpoint['value'] . 'px';
+
+		return "{$bound}:{$width}";
 	}
 
 	private function transform_value( $value ): ?string {
@@ -159,7 +167,7 @@ class Styles_Renderer {
 		}
 
 		try {
-			$transformed = $transformer(
+			$transformed = $transformer->transform(
 				$value['value'],
 				fn( $value ) => $this->transform_value( $value )
 			);
@@ -178,14 +186,14 @@ class Styles_Renderer {
 		);
 	}
 
-	private function get_transformer( $type ): ?callable {
+	private function get_transformer( $type ): ?Style_Transformer_Base {
 		if ( ! isset( $this->transformers[ $type ] ) ) {
 			return null;
 		}
 
 		$transformer = $this->transformers[ $type ];
 
-		if ( ! $transformer || ! is_callable( $transformer ) ) {
+		if ( ! $transformer instanceof Style_Transformer_Base ) {
 			return null;
 		}
 
